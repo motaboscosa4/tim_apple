@@ -1,0 +1,23 @@
+name: Build Executable
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build Solution
+      run: msbuild tim_apple.sln /p:Configuration=Release /p:Platform=x64
+
+    - name: Upload tim_apple.exe Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: tim_apple-build
+        path: "**/Release/tim_apple.exe"
